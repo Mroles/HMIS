@@ -6,6 +6,7 @@ const User = db.user;
 const Dept = db.department;
 const Role = db.role;
 const Op = db.Sequelize.Op;
+require('dotenv').config();
 
 var {
     verifySignUp
@@ -15,11 +16,12 @@ var {
     authJwt
 } = require('../middleware');
 var jwt = require("jsonwebtoken");
-var config = require('../config/authconfig');
+
 
 
 router.post('/signin', (req, res) => {
     console.log(req.body);
+    console.log(process.env.ACCESSTOKEN);
     User.findOne({
             where: {
                 username: req.body.username
@@ -54,7 +56,7 @@ router.post('/signin', (req, res) => {
 
                 var token = jwt.sign({
                     id: user.id
-                }, config.secret, {
+                }, process.env.ACCESSTOKEN, {
                     expiresIn: 86400 // 24 hours
                 });
 
